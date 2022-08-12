@@ -1,0 +1,58 @@
+
+「并查集」的代码是高度模版化的：
+
+  Ⅰ、并查集」代码基本结构：
+public class UnionFind {
+    // UnionFind 的构造函数，size 为 root 数组的长度
+    public UnionFind(int size) {}
+    public int find(int x) {}
+    public void union(int x, int y) {}
+    public boolean connected(int x, int y) {}
+}
+
+ Ⅱ、「并查集」的 find 函数
+ ①、find方法基本实现：
+    public int find(int x) {
+        while (x != root[x]) {
+            x = root[x];
+        }
+        return x;
+    }
+ ②、find方法(路径压缩)
+    public int find(int x) {
+        if (x == root[x]) {
+            return x;
+        }
+        return root[x] = find(root[x]);
+    }
+
+ Ⅲ、「并查集」的 union 函数
+  ①、union方法基本实现
+     public void union(int x, int y) {
+         int rootX = find(x);
+         int rootY = find(y);
+         if (rootX != rootY) {
+             root[rootY] = rootX;
+         }
+     };
+  ①、union方法(按秩合并)
+     public void union(int x, int y) {
+         int rootX = find(x);
+         int rootY = find(y);
+         if (rootX != rootY) {
+             if (rank[rootX] > rank[rootY]) {
+                 root[rootY] = rootX;
+             } else if (rank[rootX] < rank[rootY]) {
+                 root[rootX] = rootY;
+             } else {
+                 root[rootY] = rootX;
+                 rank[rootX] += 1;
+             }
+         }
+     };
+
+ Ⅳ、「并查集」的 connected 函数
+     public boolean connected(int x, int y) {
+         return find(x) == find(y);
+     }
+
